@@ -35,7 +35,7 @@ rule star_genome_index:
     log:
         "results/logs/star_genome_index.log"
     wrapper:
-        "0.72.0/bio/star/index"
+        "https://github.com/snakemake/snakemake-wrappers/raw/0.72.0/bio/star/index"
 
 def get_fqr1(wc):
     tmp = SUBSAMPLE_TABLE[SUBSAMPLE_TABLE['sample_name'] == wc.sample]
