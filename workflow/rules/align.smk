@@ -70,9 +70,9 @@ rule star_align_bait:
         # optional parameters
         extra="--outReadsUnmapped Fastx --outSAMtype BAM Unsorted"
     resources:
-        time=240,
-        mem=20000,
-        cpus=4
+        time=360,
+        mem=128000,
+        cpus=24
     threads:
         4
     wrapper:
@@ -93,7 +93,7 @@ rule star_align_genome:
     log:
         "results/logs/star/genome/{sample}/{subsample}.log"
     resources:
-        time=60,
+        time=360,
         mem=128000,
         cpus=24
     params:
