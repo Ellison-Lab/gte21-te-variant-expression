@@ -1,0 +1,44 @@
+import sys
+import peppy
+from Bio import SeqIO
+
+singularity: "docker://continuumio/miniconda3"
+configfile: "config/config.yaml"
+pepfile: "config/pep.yaml"
+
+SAMPLES = [x.sample_name for x in pep.samples]
+SUBSAMPLE_TABLE = pep.subsample_table[0]
+#SUBSAMPLE_NAMES = [expand("{s}-{ss}",s=x, ss=SUBSAMPLE_TABLE[SUBSAMPLE_TABLE['sample_name'] == x] for x in SAMPLES]
+TES = [x.id.split("#")[0] for x in SeqIO.parse(config.get("TRANSPOSON_FASTA"), "fasta")]
+
+#print(SUBSAMPLE_NAMES)
+
+MAIN_CONFIG = config.get("MAIN_CONFIG",'config/config.yaml')
+
+
+subworkflow custom_genome:
+    workdir:
+        "../../gte21-custom-genome/"
+    snakefile:
+        "../../gte21-custom-genome/workflow/Snakefile"
+    configfile:
+        MAIN_CONFIG
+
+subworkflow te_variants:
+    workdir:
+        "../../transposon-variants-hts/"
+    snakefile:
+        "../../transposon-variants-hts/workflow/Snakefile"
+    configfile:
+        MAIN_CONFIG
+
+rule all:
+    input:
+        #expand("results/aln/genome/{s}/{r}/Aligned.sortedByCoord.out.bam",s=SAMPLES,r=['rep1']),
+        expand("results/aln/sex-te/{s}/{r}.{sex}.bam",s=SAMPLES,r=['rep1'],sex=['male','unknown']),
+        te_variants(expand('results/copies/{s}.tsv',s=['w1118_male','w1118_female'])),
+        expand("results/depths/{s}-{r}-{t}-at-male-snps.tsv.gz",s=['w1118_testes'],r=['rep1'],t=['depth','reads'])
+
+
+include: "../workflow/rules/align.smk"
+include: "../workflow/rules/male-depths.smk"

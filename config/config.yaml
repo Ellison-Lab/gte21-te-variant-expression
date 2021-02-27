@@ -1,0 +1,10 @@
+MAIN_CONFIG: /media/mlawlor/work/transposon-variant-expression/config/config.yaml
+TRANSPOSON_FASTA: /media/mlawlor/work/data/genome/dmel_repbase_lib.fasta
+#COMBINED_GENOME: /media/mlawlor/work/TestisTpn/data/combined.fasta
+#COMBINED_GTF: /media/mlawlor/work/TestisTpn/data/combined.fixed.gtf
+TRNA_FASTA: ftp.flybase.net/releases/FB2018_03/dmel_r6.22/fasta/dmel-all-tRNA-r6.22.fasta.gz
+MISC_RNA_FASTA: ftp.flybase.net/releases/FB2018_03/dmel_r6.22/fasta/dmel-all-miscRNA-r6.22.fasta.gz
+MIN_BM2_MAPQ: 1
+MOSDEPTH_WINDOW_SIZE: 100
+MIN_SNP_BQ: 10
+MIN_SNP_SUPPORT: 15
