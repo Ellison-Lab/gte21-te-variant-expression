@@ -32,6 +32,10 @@ rule star_genome_index:
         12
     params:
         extra = "--genomeSAindexNbases 12"
+    resources:
+        time=60,
+        mem=20000,
+        cpus=12
     log:
         "results/logs/star_genome_index.log"
     wrapper:
@@ -65,6 +69,10 @@ rule star_align_bait:
         index="results/idx/bait",
         # optional parameters
         extra="--outReadsUnmapped Fastx --outSAMtype BAM Unsorted"
+    resources:
+        time=240,
+        mem=20000,
+        cpus=4
     threads:
         4
     wrapper:
@@ -84,13 +92,17 @@ rule star_align_genome:
         "results/aln/genome/{sample}/{subsample}/Aligned.sortedByCoord.out.bam"
     log:
         "results/logs/star/genome/{sample}/{subsample}.log"
+    resources:
+        time=60,
+        mem=128000,
+        cpus=24
     params:
         # path to STAR reference genome index
         index="results/idx/genome",
         # optional parameters
         extra="--outSAMtype BAM SortedByCoordinate --outSAMmultNmax 1 --outSAMattributes NH HI AS nM vA vG --varVCFfile {v} --sjdbGTFfile {g}".format(g=custom_genome('results/custom-genome/combined.fixed.gtf'), v=te_variants('results/snps/w1118_male-snps.vcf'))
     threads:
-        4
+        24
     wrapper:
         "https://github.com/snakemake/snakemake-wrappers/raw/0.72.0/bio/star/align"
 
@@ -99,6 +111,9 @@ rule filter_reads:
         rules.star_align_genome.output
     output:
         "results/aln/filt/{sample}/{subsample}.bam"
+    resources:
+        time=20,
+        mem=10000,
     params:
         "-O BAM -F 256"
     wrapper:
