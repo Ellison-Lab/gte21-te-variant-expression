@@ -89,7 +89,7 @@ rule star_align_genome:
         gtf = custom_genome('results/custom-genome/combined.fixed.gtf')
     output:
         # see STAR manual for additional output files
-        "results/aln/genome/{sample}/{subsample}/Aligned.sortedByCoord.out.bam"
+        "results/aln/genome/{sample}/{subsample}/Aligned.out.bam"
     log:
         "results/logs/star/genome/{sample}/{subsample}.log"
     resources:
@@ -100,15 +100,31 @@ rule star_align_genome:
         # path to STAR reference genome index
         index="results/idx/genome",
         # optional parameters
-        extra="--outSAMtype BAM SortedByCoordinate --outSAMmultNmax 1 --outSAMattributes NH HI AS nM vA vG --varVCFfile {v} --sjdbGTFfile {g}".format(g=custom_genome('results/custom-genome/combined.fixed.gtf'), v=te_variants('results/snps/snps.vcf'))
+        extra="--outSAMtype BAM Unsorted --outSAMmultNmax 1 --outSAMattributes NH HI AS nM vA vG --varVCFfile {v} --sjdbGTFfile {g}".format(g=custom_genome('results/custom-genome/combined.fixed.gtf'), v=te_variants('results/snps/snps.vcf'))
     threads:
         24
     wrapper:
         "https://github.com/snakemake/snakemake-wrappers/raw/0.72.0/bio/star/align"
 
-rule filter_reads:
+
+rule sort_star:
     input:
         rules.star_align_genome.output
+    output:
+        "results/aln/sort/{sample}/{subsample}.bam"
+    threads:  # Samtools takes additional threads through its option -@
+        8     # This value - 1 will be sent to -@.
+    resources:
+        time=240,
+        mem=24000,
+        cpus=8
+    wrapper:
+        "https://github.com/snakemake/snakemake-wrappers/raw/0.72.0/bio/samtools/sort"
+
+
+rule filter_reads:
+    input:
+        rules.sort_star.output
     output:
         "results/aln/filt/{sample}/{subsample}.bam"
     resources:
