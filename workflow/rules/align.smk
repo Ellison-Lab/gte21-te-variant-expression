@@ -114,6 +114,8 @@ rule sort_star:
         "results/aln/sort/{sample}/{subsample}.bam"
     threads:  # Samtools takes additional threads through its option -@
         8     # This value - 1 will be sent to -@.
+    params:
+        extra=""
     resources:
         time=240,
         mem=24000,
