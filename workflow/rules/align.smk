@@ -93,7 +93,7 @@ rule star_align_genome:
     log:
         "results/logs/star/genome/{sample}/{subsample}.log"
     resources:
-        time=480,
+        time=600,
         mem=128000,
         cpus=24
     params:
