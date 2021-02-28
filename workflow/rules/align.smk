@@ -93,8 +93,8 @@ rule star_align_genome:
     log:
         "results/logs/star/genome/{sample}/{subsample}.log"
     resources:
-        time=600,
-        mem=128000,
+        time=720,
+        mem=64000,
         cpus=24
     params:
         # path to STAR reference genome index
