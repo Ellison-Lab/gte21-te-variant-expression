@@ -100,7 +100,7 @@ rule star_align_genome:
         # path to STAR reference genome index
         index="results/idx/genome",
         # optional parameters
-        extra="--outSAMtype BAM SortedByCoordinate --outSAMmultNmax 1 --outSAMattributes NH HI AS nM vA vG --varVCFfile {v} --sjdbGTFfile {g}".format(g=custom_genome('results/custom-genome/combined.fixed.gtf'), v=te_variants('results/snps/w1118_male-snps.vcf'))
+        extra="--outSAMtype BAM SortedByCoordinate --outSAMmultNmax 1 --outSAMattributes NH HI AS nM vA vG --varVCFfile {v} --sjdbGTFfile {g}".format(g=custom_genome('results/custom-genome/combined.fixed.gtf'), v=te_variants('results/snps/snps.vcf'))
     threads:
         24
     wrapper:
