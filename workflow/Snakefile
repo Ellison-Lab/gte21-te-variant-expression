@@ -36,8 +36,8 @@ rule all:
     input:
         #expand("results/aln/genome/{s}/{r}/Aligned.sortedByCoord.out.bam",s=SAMPLES,r=['rep1']),
         expand("results/aln/sex-te/{s}/{r}.{sex}.bam",s=SAMPLES,r=['rep1'],sex=['male','unknown']),
-        te_variants(expand('results/copies/{s}.tsv',s=['w1118_male','w1118_female'])),
-        expand("results/depths/{s}-{r}-{t}-at-male-snps.tsv.gz",s=['w1118_testes'],r=['rep1','rep2','rep3','rep4'],t=['depth','reads'])
+        te_variants(expand('results/copies/{s}.csv',s=['w1118_male','w1118_female'])),
+        expand("results/depths/{s}-{r}-{t}-at-male-snps.csv.gz",s=['w1118_testes'],r=['rep1','rep2','rep3','rep4'],t=['depth','reads'])
 
 
 include: "../workflow/rules/align.smk"

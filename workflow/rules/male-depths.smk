@@ -60,7 +60,7 @@ rule get_male_depth_per_snp:
         bam = rules.get_te_reads.output.bam,
         vcf = te_variants('results/snps/snps.vcf'),
     output:
-        tsv = "results/depths/{sample}-{subsample}-depth-at-male-snps.tsv.gz",
+        csv = "results/depths/{sample}-{subsample}-depth-at-male-snps.csv.gz",
     resources:
         time=20,
         mem=10000,
@@ -76,7 +76,7 @@ rule get_male_reads_per_snp:
         unk = rules.get_non_male_te_reads.output.bam,
         vcf = te_variants('results/snps/snps.vcf'),
     output:
-        tsv = "results/depths/{sample}-{subsample}-reads-at-male-snps.tsv.gz",
+        csv = "results/depths/{sample}-{subsample}-reads-at-male-snps.csv.gz",
     resources:
         time=20,
         mem=10000,

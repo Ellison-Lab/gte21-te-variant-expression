@@ -2,10 +2,10 @@ library(VariantAnnotation)
 library(Rsamtools)
 library(tidyverse)
 
-bam <- snakemake@input[['bam']] 
+bam <- snakemake@input[['bam']]
 #bam <- "results/aln/tes/w1118_testes/rep1.tes.bam"
 
-vcf <- snakemake@input[['vcf']] 
+vcf <- snakemake@input[['vcf']]
 #vcf <- "~/work/transposon-variants-hts/results/snps/snps.vcf"
 
 sample_name <- snakemake@wildcards[['sample']]
@@ -20,7 +20,7 @@ gr <- vr %>% GRanges()
 allele.lookup <- vr %>% as.data.frame() %>% as_tibble() %>%
   dplyr::select(seqnames, pos=start, ref, alt, specificity) %>%
   filter(specificity == 'w1118_male')
-  
+
 
 pup <- PileupParam(max_depth = 10e6,
                    distinguish_nucleotides = T,
@@ -44,4 +44,4 @@ pileups.df <- pileups.df %>%
   arrange(seqnames, pos)
 
 
-write_tsv(pileups.df, snakemake@output[['tsv']])
+write_csv(pileups.df, snakemake@output[['csv']])

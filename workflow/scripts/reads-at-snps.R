@@ -28,4 +28,4 @@ pileups.df <- list(male=male, unknown =unk) %>%
   arrange(seqnames, pos)
 
 
-write_tsv(pileups.df, snakemake@output[['tsv']])
+write_csv(pileups.df, snakemake@output[['csv']])
