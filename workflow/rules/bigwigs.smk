@@ -3,7 +3,7 @@ rule bigwigs:
         bam = rules.get_te_reads.output.bam,
         bai = rules.get_te_reads.output.bai
     output:
-        "results/bigwig/tes/{sample}.{subsample}.tes.strand-{strand}.rpkm.bw"
+        "results/bigwigs/tes/{sample}.{subsample}.tes.strand-{strand}.rpkm.bw"
     threads:
         4
     conda:
