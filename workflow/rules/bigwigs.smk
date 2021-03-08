@@ -5,7 +5,7 @@ rule bigwigs:
     output:
         "results/bigwigs/tes/{sample}.{subsample}.tes.strand-{strand}.rpkm.bw"
     threads:
-        4
+        24
     conda:
         "../envs/deeptools.yaml"
     resources:
