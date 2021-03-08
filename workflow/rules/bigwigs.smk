@@ -1,6 +1,6 @@
 rule bigwigs:
     input:
-        bam = "results/aln/filt/{sample}/{subsample}.bam"
+        bam = "results/aln/filt/{sample}/{subsample}.bam",
         bai = "results/aln/filt/{sample}/{subsample}.bam.bai"
     output:
         "results/bigwigs/tes/{sample}.{subsample}.tes.strand-{strand}.rpkm.bw"
