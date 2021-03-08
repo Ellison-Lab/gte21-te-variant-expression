@@ -8,6 +8,10 @@ rule bigwigs:
         4
     conda:
         "../envs/deeptools.yaml"
+    resources:
+        time=60,
+        mem=20000,
+        cpus=24
     shell:
         """
         bamCoverage -b {input.bam} \
