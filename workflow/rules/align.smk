@@ -136,3 +136,13 @@ rule filter_reads:
         "-O BAM -F 256"
     wrapper:
         "https://github.com/snakemake/snakemake-wrappers/raw/0.72.0/bio/samtools/view"
+
+rule samtools_index:
+    input:
+        "{file}.bam"
+    output:
+        "{file}.bam.bai"
+    params:
+        "" # optional params string
+    wrapper:
+        "https://github.com/snakemake/snakemake-wrappers/raw/0.72.0/bio/samtools/index"

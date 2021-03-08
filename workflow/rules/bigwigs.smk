@@ -1,7 +1,7 @@
 rule bigwigs:
     input:
-        bam = rules.get_te_reads.output.bam,
-        bai = rules.get_te_reads.output.bai
+        bam = "results/aln/filt/{sample}/{subsample}.bam"
+        bai = "results/aln/filt/{sample}/{subsample}.bam.bai"
     output:
         "results/bigwigs/tes/{sample}.{subsample}.tes.strand-{strand}.rpkm.bw"
     threads:
