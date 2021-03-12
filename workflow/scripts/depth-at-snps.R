@@ -15,7 +15,7 @@ subsample_name <- snakemake@wildcards[['subsample']]
 
 vr <- VariantAnnotation::readVcfAsVRanges(vcf)
 
-gr <- vr %>% GRanges()
+gr <- vr %>% GRanges() %>% GenomicRanges::reduce()
 
 allele.lookup <- vr %>% as.data.frame() %>% as_tibble() %>%
   dplyr::select(seqnames, pos=start, ref, alt, specificity) %>%
