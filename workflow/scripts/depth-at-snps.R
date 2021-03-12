@@ -41,7 +41,8 @@ pileups.df <- pileups.df %>%
   #group_by(seqnames, pos, sex, sample, subsample) %>%
   #summarise(depth = sum(`count`),.groups = 'drop') %>%
   dplyr::select(sample, subsample, seqnames,pos, nucleotide, sex, count) %>%
-  arrange(seqnames, pos)
+  arrange(seqnames, pos) %>%
+  distinct() # rm dups to joining with the allele lookup, which has multiple rows per position
 
 
 write_csv(pileups.df, snakemake@output[['csv']])
