@@ -38,9 +38,9 @@ pileups.df <- pileup(bam, scanBamParam = scbp, pileupParam = pup) %>%
 pileups.df <- pileups.df %>%
   left_join(allele.lookup, by=c('seqnames','pos')) %>%
   mutate(sex = ifelse(nucleotide == alt, 'male','unknown')) %>%
-  group_by(seqnames, pos, sex, sample, subsample) %>%
+  #group_by(seqnames, pos, sex, sample, subsample) %>%
   #summarise(depth = sum(`count`),.groups = 'drop') %>%
-  dplyr::select(sample, subsample, seqnames,pos,sex, count) %>%
+  dplyr::select(sample, subsample, seqnames,pos, nucleotide, sex, count) %>%
   arrange(seqnames, pos)
 
 
