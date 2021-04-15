@@ -52,11 +52,6 @@ def get_fqr2(wc):
     return tmp2.get('fastq_r2')
 
 
-def get_proper_ended_fastp_call(x):
-    fqs = [get_fqr1(x), get_fqr2(x)]
-    return "--in1 {r1} --in2 {r2}".format(r1=fqs[0], r2=fqs[1])
-
-
 rule trim_pe:
     input:
         fq1 = lambda wc: get_fqr1(wc),
@@ -68,14 +63,12 @@ rule trim_pe:
         json = "results/fastq/{sample}_{subsample}_fastp.json"
     threads:
         2
-    params:
-        call_in = lambda wc: get_proper_ended_fastp_call(wc),
     conda:
         "../envs/fastp.yaml"
     singularity:
         "docker://quay.io/biocontainers/fastp:0.20.0--hdbcaa40_0"
     shell:
-        "fastp {params.call_in} "
+        "fastp --in1 {input.fq1} --in2 {input.fq2} "
         "--out1 {output.r1} --out2 {output.r2} "
         "-j {output.json} -h {output.html} "
         "-w {threads} -L -R {wildcards.sample}_fastp"
