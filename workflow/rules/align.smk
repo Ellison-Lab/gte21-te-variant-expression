@@ -70,7 +70,6 @@ rule trim_pe:
         2
     params:
         call_in = lambda wc: get_proper_ended_fastp_call(wc),
-        call_out = lambda wc: get_proper_ended_fastp_out(wc)
     conda:
         "../envs/fastp.yaml"
     singularity:
