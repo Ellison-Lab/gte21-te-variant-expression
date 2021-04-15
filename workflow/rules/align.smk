@@ -69,8 +69,8 @@ rule trim_pe:
     threads:
         2
     params:
-        call_in = lambda wc: get_proper_ended_fastp_call(wc.sample),
-        call_out = lambda wc: get_proper_ended_fastp_out(wc.sample)
+        call_in = lambda wc: get_proper_ended_fastp_call(wc),
+        call_out = lambda wc: get_proper_ended_fastp_out(wc)
     conda:
         "../envs/fastp.yaml"
     singularity:
