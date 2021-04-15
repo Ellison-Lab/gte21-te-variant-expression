@@ -51,11 +51,42 @@ def get_fqr2(wc):
     tmp2 = tmp[tmp['subsample_name'] == wc.subsample]
     return tmp2.get('fastq_r2')
 
+
+def get_proper_ended_fastp_call(x):
+    fqs = [get_fqr1(x), get_fqr2(x)]
+    return "--in1 {r1} --in2 {r2}".format(r1=fqs[0], r2=fqs[1])
+
+
+rule trim_pe:
+    input:
+        fq1 = lambda wc: get_fqr1(wc),
+        fq2 = lambda wc: get_fqr2(wc),
+    output:
+        r1 = "results/fastq/{sample}_{subsample}_r1.trimmed.fq.gz",
+        r2 = "results/fastq/{sample}_{subsample}_r2.trimmed.fq.gz",
+        html = "results/fastq/{sample}_{subsample}_fastp.html",
+        json = "results/fastq/{sample}_{subsample}_fastp.json"
+    threads:
+        2
+    params:
+        call_in = lambda wc: get_proper_ended_fastp_call(wc.sample),
+        call_out = lambda wc: get_proper_ended_fastp_out(wc.sample)
+    conda:
+        "../envs/fastp.yaml"
+    singularity:
+        "docker://quay.io/biocontainers/fastp:0.20.0--hdbcaa40_0"
+    shell:
+        "fastp {params.call_in} "
+        "--out1 {output.r1} --out2 {output.r2} "
+        "-j {output.json} -h {output.html} "
+        "-w {threads} -L -R {wildcards.sample}_fastp"
+
+
 rule star_align_bait:
     input:
-        fq1 = get_fqr1,
+        fq1 = rules.trim_pe.output.r1,
         # paired end reads needs to be ordered so each item in the two lists match
-        fq2 = get_fqr2,
+        fq2 = rules.trim_pe.output.r2,
         idx = rules.star_bait_index.output,
     output:
         # see STAR manual for additional output files
