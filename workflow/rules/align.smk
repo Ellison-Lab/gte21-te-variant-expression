@@ -97,11 +97,11 @@ rule star_align_bait:
         # optional parameters
         extra="--outReadsUnmapped Fastx --outSAMtype BAM Unsorted"
     resources:
-        time=480,
+        time=640,
         mem=128000,
         cpus=24
     threads:
-        4
+        24
     wrapper:
         "https://github.com/snakemake/snakemake-wrappers/raw/0.72.0/bio/star/align"
 
