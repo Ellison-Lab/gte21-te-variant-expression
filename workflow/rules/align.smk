@@ -62,7 +62,11 @@ rule trim_pe:
         html = "results/fastq/{sample}_{subsample}_fastp.html",
         json = "results/fastq/{sample}_{subsample}_fastp.json"
     threads:
-        2
+        12
+    resources:
+        time=60,
+        mem=20000,
+        cpus=12
     conda:
         "../envs/fastp.yaml"
     singularity:
