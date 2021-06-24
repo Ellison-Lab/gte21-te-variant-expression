@@ -80,7 +80,7 @@ rule trim_pe:
     singularity:
         "docker://quay.io/biocontainers/fastp:0.20.0--hdbcaa40_0"
     shell:
-        "fastp --in1 {input.fq1} --in2 {input.fq2} "
+        "fastp --in1 {input.r1} --in2 {input.r2} "
         "--out1 {output.r1} --out2 {output.r2} "
         "-j {output.json} -h {output.html} "
         "-w {threads} -L -R {wildcards.sample}_fastp"
