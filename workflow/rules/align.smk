@@ -41,21 +41,29 @@ rule star_genome_index:
     wrapper:
         "https://github.com/snakemake/snakemake-wrappers/raw/0.72.0/bio/star/index"
 
-def get_fqr1(wc):
+
+def get_fastqs(wc, r="r1"):
     tmp = SUBSAMPLE_TABLE[SUBSAMPLE_TABLE['sample_name'] == wc.sample]
     tmp2 = tmp[tmp['subsample_name'] == wc.subsample]
-    return tmp2.get('fastq_r1')
+    return [tmp2.get('fastq_'+r)[0]]
 
-def get_fqr2(wc):
-    tmp = SUBSAMPLE_TABLE[SUBSAMPLE_TABLE['sample_name'] == wc.sample]
-    tmp2 = tmp[tmp['subsample_name'] == wc.subsample]
-    return tmp2.get('fastq_r2')
-
+rule get_fqs:
+    output:
+        r1 = "results/fastq/{sample}/{subsample}_r1.fastq.gz",
+        r2 = "results/fastq/{sample}/{subsample}_r2.fastq.gz"
+    params:
+        r1 = lambda wc: get_fastqs(wc, "r1"),
+        r2 = lambda wc: get_fastqs(wc, "r2"),
+    shell:
+        """
+        wget -O {output.r1} {params.r1} &&
+        wget -O {output.r2} {params.r2}
+        """
 
 rule trim_pe:
     input:
-        fq1 = lambda wc: get_fqr1(wc),
-        fq2 = lambda wc: get_fqr2(wc),
+        r1 = rules.get_fqs.output.r1,
+        r2 = rules.get_fqs.output.r2
     output:
         r1 = "results/fastq/{sample}_{subsample}_r1.trimmed.fq.gz",
         r2 = "results/fastq/{sample}_{subsample}_r2.trimmed.fq.gz",
